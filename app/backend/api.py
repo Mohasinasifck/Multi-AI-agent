@@ -11,12 +11,12 @@ logger = get_logger(__name__)
 app = FastAPI(title="MULTI AI AGENT")
 
 class RequestState(BaseModel):
-    model_name:str
-    system_prompt:str
-    messages:List[str]
+    model_name: str
+    system_prompt: str
+    messages: List[str]
     allow_search: bool
 
-@app.post("/chat")
+@app.post("/chat" responses={400: {"description": "Invalid model name"}, 500: {"description": "Internal Server Error"}})
 def chat_endpoint(request:RequestState):
     logger.info(f"Received request for model : {request.model_name}")
 
@@ -32,12 +32,12 @@ def chat_endpoint(request:RequestState):
             request.system_prompt
         )
 
-        logger.info(f"Sucesfully got response from AI Agent {request.model_name}")
+        logger.info(f"Sucessfully got response from AI Agent {request.model_name}")
 
         return {"response" : response}
     
     except Exception as e:
-        logger.error("Some error ocuured during reponse generation")
+        logger.error("Some error occurred during reponse generation")
         raise HTTPException(
             status_code=500 , 
             detail=str(CustomException("Failed to get AI response" , error_detail=e))
