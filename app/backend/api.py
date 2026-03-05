@@ -16,7 +16,7 @@ class RequestState(BaseModel):
     messages: List[str]
     allow_search: bool
 
-@app.post("/chat" responses={400: {"description": "Invalid model name"}, 500: {"description": "Internal Server Error"}})
+@app.post("/chat", responses={400: {"description": "Invalid model name"}, 500: {"description": "Internal Server Error"}})
 def chat_endpoint(request:RequestState):
     logger.info(f"Received request for model : {request.model_name}")
 
